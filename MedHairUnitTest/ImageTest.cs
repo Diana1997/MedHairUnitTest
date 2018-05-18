@@ -17,12 +17,12 @@ namespace MedHairUnitTest
         {
             Image image;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 image = new Image()
                 {
-                    DateTime = DateTime.Now,
+                    CreatectionDateTime = DateTime.Now,
                     Title = "title",
                     ImageContent = new byte[2] { 0, 1 },
                 };
@@ -33,23 +33,19 @@ namespace MedHairUnitTest
                 Assert.AreEqual("title", imageRes.Title);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                image = new Image()
-                {
-                    ImageID = id,
-                    DateTime = DateTime.Now,
-                    Title = "name",
-                    ImageContent = new byte[2] { 0, 1 },
-                };
+                image.ImageID = id;
+                image.Title = "title1";
                 ctrl.EditImage(image);
                 var imageRes = ctrl.GetImage(id);
                 Assert.IsNotNull(imageRes);
-                Assert.AreEqual("name", imageRes.Title);
+                Assert.AreEqual("title1", imageRes.Title);
+                Assert.IsTrue(new byte[2] { 0, 1 }.SequenceEqual(imageRes.ImageContent));
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 ctrl.DeleteImage(image.ImageID);

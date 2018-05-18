@@ -18,38 +18,32 @@ namespace MedHairUnitTest
         {
             CommentOnTheVisit commentOnTheVisit;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 commentOnTheVisit = new CommentOnTheVisit()
                 {
                      Comment = "Comment",
-                      TypeOfComment = TypeOfComment.AdministratoroTheDoctor,
+                     TypeOfComment = TypeOfComment.AdministratoroTheDoctor,
                 };
-
                 id = ctrl.CreateCommentOnTheVisit(commentOnTheVisit);
                 var commentOnTheVisitRes = ctrl.GetCommentOnTheVisit(id);
                 Assert.IsNotNull(commentOnTheVisitRes);
                 Assert.AreEqual("Comment", commentOnTheVisitRes.Comment);
                 Assert.AreEqual(TypeOfComment.AdministratoroTheDoctor, commentOnTheVisitRes.TypeOfComment);
             }
-
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                commentOnTheVisit = new CommentOnTheVisit()
-                {
-                    CommentOnTheVisitID = id,
-                    Comment = "Comment",
-                    TypeOfComment = TypeOfComment.DoctorAdministrator,
-                };
+                commentOnTheVisit.CommentOnTheVisitID = id;
+                commentOnTheVisit.Comment = "Comment1";
                 ctrl.EditCommentOnTheVisit(commentOnTheVisit);
                 var commentOnTheVisitRes = ctrl.GetCommentOnTheVisit(id);
                 Assert.IsNotNull(commentOnTheVisitRes);
-                Assert.AreEqual("Comment", commentOnTheVisitRes.Comment);
-                Assert.AreEqual(TypeOfComment.DoctorAdministrator, commentOnTheVisitRes.TypeOfComment);
+                Assert.AreEqual("Comment1", commentOnTheVisitRes.Comment);
+                Assert.AreEqual(TypeOfComment.AdministratoroTheDoctor, commentOnTheVisitRes.TypeOfComment);
             }
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 ctrl.DeleteCommentOnTheVisit(commentOnTheVisit.CommentOnTheVisitID);

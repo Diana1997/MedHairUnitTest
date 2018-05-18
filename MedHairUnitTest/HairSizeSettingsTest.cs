@@ -17,7 +17,7 @@ namespace MedHairUnitTest
         {
             HairSizeSettings  hairSizeSettings;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 hairSizeSettings = new HairSizeSettings
@@ -37,30 +37,28 @@ namespace MedHairUnitTest
                 Assert.AreEqual(1, hairSizeSettingsRes.DiameterOfTerminalsThinMedium);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                hairSizeSettings = new HairSizeSettings
-                {
-                    HairSizeSettingsId = id,
-                    DiameterOfTerminalsMediumThick = 2,
-                    DiameterOfTerminalsThinMedium = 2,
-                    DiameterOfVelusTerminal = 1,
-                    LengthOfTelogenHair = 1,
-                    RadiusOfFollicularUnits = 1,
+                hairSizeSettings.HairSizeSettingsId = id;
+                hairSizeSettings.DiameterOfTerminalsMediumThick = 2;
+                hairSizeSettings.DiameterOfTerminalsThinMedium = 2;
 
-                };
                 ctrl.EditHairSizeSettings(hairSizeSettings);
                 var hairSizeSettingsRes = ctrl.GetHairSizeSettings(id);
+
                 Assert.IsNotNull(hairSizeSettingsRes);
                 Assert.AreEqual(2, hairSizeSettingsRes.DiameterOfTerminalsMediumThick);
                 Assert.AreEqual(2, hairSizeSettingsRes.DiameterOfTerminalsThinMedium);
+                Assert.AreEqual(1, hairSizeSettings.DiameterOfVelusTerminal);
+                Assert.AreEqual(1, hairSizeSettings.LengthOfTelogenHair);
             }
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 ctrl.DeleteHairSizeSettings(hairSizeSettings.HairSizeSettingsId);
                 var hairSizeSettingsRes = ctrl.GetHairSizeSettings(id);
+
                 Assert.IsNull(hairSizeSettingsRes);
             }
         }

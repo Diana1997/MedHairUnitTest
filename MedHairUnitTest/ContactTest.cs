@@ -17,7 +17,7 @@ namespace MedHairUnitTest
         {
             Contact  contact;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 contact = new Contact
@@ -39,39 +39,31 @@ namespace MedHairUnitTest
 
                 id = ctrl.CreateContact(contact);
                 var contactRes = ctrl.GetContact(id);
-                Assert.IsNotNull(contact);
+                Assert.IsNotNull(contactRes);
                 Assert.AreEqual("f", contactRes.Firstname);
                 Assert.AreEqual("s", contactRes.Secondname);
+                Assert.AreEqual("email@gmail.com", contact.Email);
+                Assert.AreEqual(Gender.Femail, contact.Gender);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                contact = new Contact
-                {
-                    ContactID = id,
-                    Firstname = "f",
-                    Secondname = "s",
-                    Lastname = "l",
-                    Gender = Gender.Femail,
-                    Birthday = DateTime.Now,
-                    Phone = "45454",
-                    Email = "email@gmail.com",
-                    Address = "a",
-                    Position = "p",
-                    Specialty = "s",
-                    Education = "e",
-                    Comment = "c",
-                    Degree = "D",
-                };
+                contact.ContactID = id;
+                contact.Firstname =  "firstname";
+                contact.Lastname = "lastname";
+
                 ctrl.EditContact(contact);
                 var contactRes = ctrl.GetContact(id);
                 Assert.IsNotNull(contact);
-                Assert.AreEqual("f", contactRes.Firstname);
-                Assert.AreEqual("s", contactRes.Secondname);
+
+                Assert.AreEqual("firstname", contactRes.Firstname);
+                Assert.AreEqual("lastname", contactRes.Lastname);
+                Assert.AreEqual("email@gmail.com", contact.Email);
+                Assert.AreEqual(Gender.Femail, contact.Gender);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 ctrl.DeleteContact(contact.ContactID);

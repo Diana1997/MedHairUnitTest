@@ -17,7 +17,7 @@ namespace MedHairUnitTest
         {
             Diagnostic diagnostic;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 diagnostic = new Diagnostic
@@ -30,32 +30,28 @@ namespace MedHairUnitTest
 
                 id = ctrl.CreateDiagnostic(diagnostic);
                 var diagnosticRes = ctrl.GetDiagnostic(id);
+
                 Assert.IsNotNull(diagnosticRes);
                 Assert.AreEqual("text", diagnosticRes.DiagnosticText);
                 Assert.AreEqual("comment", diagnosticRes.Comment);
 
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                diagnostic = new Diagnostic
-                {
-                    DiagnosticID = id,
-                    DiagnosticText = "text",
-                    CreationDate = DateTime.Now,
-                    DateOfLastConfirmation = DateTime.Now,
-                    Comment = "comment",
-                };
+                diagnostic.DiagnosticID = id;
+                diagnostic.DiagnosticText = "text1111";
+                
 
                 ctrl.EditDiagnostic(diagnostic);
                 var diagnosticRes = ctrl.GetDiagnostic(id);
                 Assert.IsNotNull(diagnosticRes);
-                Assert.AreEqual("text", diagnosticRes.DiagnosticText);
+                Assert.AreEqual("text1111", diagnosticRes.DiagnosticText);
                 Assert.AreEqual("comment", diagnosticRes.Comment);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
 

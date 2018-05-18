@@ -58,6 +58,7 @@
     <Compile Include="CommentOnTheVisitTest.cs" />
     <Compile Include="ContactTest.cs" />
     <Compile Include="DiagnosticsTest.cs" />
+    <Compile Include="DocumentTest.cs" />
     <Compile Include="FieldOptionTest.cs" />
     <Compile Include="HairSizeSettingsTest.cs" />
     <Compile Include="HairTest.cs" />
@@ -67,9 +68,12 @@
     <Compile Include="PictureTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportFieldTest.cs" />
+    <Compile Include="ReportTemplateTest.cs" />
+    <Compile Include="ResearchTest.cs" />
     <Compile Include="SettingsTest.cs" />
     <Compile Include="StatisticalSettingsTest.cs" />
     <Compile Include="UserTest.cs" />
+    <Compile Include="VisitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -78,7 +82,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Desktop\MedHair.ClassLibrary\MedHair.ClassLibrary.csproj">
+    <ProjectReference Include="..\MedHair.ClassLibrary\MedHair.ClassLibrary.csproj">
       <Project>{00F9F36B-5548-4B7D-A541-6C3BD5023861}</Project>
       <Name>MedHair.ClassLibrary</Name>
     </ProjectReference>

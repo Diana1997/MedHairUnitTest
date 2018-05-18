@@ -16,7 +16,7 @@ namespace MedHairUnitTest
             ReportField reportField;
             int id;
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 reportField = new ReportField
@@ -33,34 +33,32 @@ namespace MedHairUnitTest
 
                 id = ctrl.CreateReportField(reportField);
                 var reportFieldRes = ctrl.GetReportField(id);
+
                 Assert.IsNotNull(reportFieldRes);
                 Assert.AreEqual("name", reportFieldRes.Name);
                 Assert.AreEqual(FieldType.Conclusion, reportFieldRes.FieldType);
+                Assert.AreEqual("title", reportFieldRes.FieldOption.Title);
+                Assert.AreEqual("Text", reportFieldRes.FieldOption.Text);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                reportField = new ReportField
-                {
-                    ReportFieldID = id,
-                    Name = "name",
-                    FieldType = FieldType.DescriptionOfTheClinic,
-                    FieldOption = new FieldOption
-                    {
-                        Text = "Text",
-                        Selected = true,
-                        Title = "title",
-                    }
-                };
+                reportField.ReportFieldID = id;
+                reportField.Name = "nameName";
+                reportField.FieldOption.Text = "textText";
+
                 ctrl.EditReportField(reportField);
                 var reportFieldRes = ctrl.GetReportField(id);
+
                 Assert.IsNotNull(reportFieldRes);
-                Assert.AreEqual("name", reportFieldRes.Name);
-                Assert.AreEqual(FieldType.DescriptionOfTheClinic, reportFieldRes.FieldType);
+                Assert.AreEqual("nameName", reportFieldRes.Name);
+                Assert.AreEqual(FieldType.Conclusion, reportFieldRes.FieldType);
+                Assert.AreEqual(true, reportFieldRes.FieldOption.Selected);
+                Assert.AreEqual("textText", reportFieldRes.FieldOption.Text);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
 

@@ -15,7 +15,7 @@ namespace MedHairUnitTest
         {
             FieldOption fieldOption;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 fieldOption = new FieldOption
@@ -28,28 +28,28 @@ namespace MedHairUnitTest
 
                 id = ctrl.CreateFieldOption(fieldOption);
                 var fieldOptionRes = ctrl.GetFieldOption(id);
+
                 Assert.IsNotNull(fieldOptionRes);
                 Assert.AreEqual("title", fieldOptionRes.Title);
                 Assert.AreEqual(true, fieldOptionRes.Selected);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                fieldOption = new FieldOption
-                {
-                    FieldOptionID = id,
-                    Title = "title",
-                    Selected = false,
-                    Text = "Text",
-                };
+                fieldOption.FieldOptionID = id;
+                fieldOption.Selected = false;
+                fieldOption.Title = "title1";
+
                 ctrl.EditFieldOption(fieldOption);
                 var fieldOptionRes = ctrl.GetFieldOption(id);
+
                 Assert.IsNotNull(fieldOptionRes);
-                Assert.AreEqual("title", fieldOptionRes.Title);
+                Assert.AreEqual("title1", fieldOptionRes.Title);
                 Assert.AreEqual(false, fieldOptionRes.Selected);
+                Assert.AreEqual("Text", fieldOptionRes.Text);
             }
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 ctrl.DeleteFieldOption(fieldOption.FieldOptionID);

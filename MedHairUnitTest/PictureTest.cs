@@ -16,7 +16,7 @@ namespace MedHairUnitTest
         {
             Picture picture;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 picture = new Picture
@@ -28,29 +28,29 @@ namespace MedHairUnitTest
 
                 id = ctrl.CreatePicture(picture);
                 var pictureRes = ctrl.GetPicture(id);
+
                 Assert.IsNotNull(pictureRes);
                 Assert.AreEqual("title", pictureRes.Title);
                 Assert.AreEqual(true, pictureRes.Selected);
+                Assert.IsTrue(new byte[1] { 0 }.SequenceEqual(pictureRes.Data));
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                picture = new Picture
-                {
-                    PictureID = id,
-                    Title = "title11",
-                    Selected = false,
-                    Data = new byte[1] { 0 },
-                };
+                picture.PictureID = id;
+                picture.Data = new byte[2] { 0, 1 };
+
                 ctrl.EditPicture(picture);
                 var pictureRes = ctrl.GetPicture(id);
+
                 Assert.IsNotNull(pictureRes);
-                Assert.AreEqual("title11", pictureRes.Title);
-                Assert.AreEqual(false, pictureRes.Selected);
+                Assert.AreEqual("title", pictureRes.Title);
+                Assert.AreEqual(true, pictureRes.Selected);
+                Assert.IsTrue(new byte[2] { 0,1 }.SequenceEqual(pictureRes.Data));
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
 

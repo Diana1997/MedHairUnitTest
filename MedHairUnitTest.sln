@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedHairUnitTest", "MedHairUnitTest\MedHairUnitTest.csproj", "{C3652036-BCCA-4967-8FE1-7B04C1A4485A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedHair.ClassLibrary", "..\..\..\Desktop\MedHair.ClassLibrary\MedHair.ClassLibrary.csproj", "{00F9F36B-5548-4B7D-A541-6C3BD5023861}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedHair.ClassLibrary", "MedHair.ClassLibrary\MedHair.ClassLibrary.csproj", "{00F9F36B-5548-4B7D-A541-6C3BD5023861}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

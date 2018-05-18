@@ -17,7 +17,7 @@ namespace MedHairUnitTest
         {
             Lens lens;
             int id;
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 lens = new Lens()
@@ -33,22 +33,18 @@ namespace MedHairUnitTest
                 Assert.AreEqual(1, lensRes.Scale);
             }
 
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
-                lens = new Lens()
-                {
-                    LensID = id,
-                    Name = "name",
-                    Scale = 2
-                };
+                lens.LensID = id;
+                lens.Name = "lens";
                 ctrl.EditLens(lens);
                 var lensRes = ctrl.GetLens(id);
                 Assert.IsNotNull(lensRes);
-                Assert.AreEqual("name", lensRes.Name);
-                Assert.AreEqual(2, lensRes.Scale);
+                Assert.AreEqual("lens", lensRes.Name);
+                Assert.AreEqual(1, lensRes.Scale);
             }
-            using (var db = new ApplicationDbContext())
+            using (var db = new ApplicationDbContext("DefaultConnection"))
             {
                 var ctrl = new MedHairController(db);
                 ctrl.DeleteLens(lens.LensID);
